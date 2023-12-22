@@ -41,6 +41,24 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         return itemList.size();
     }
 
+    public boolean onkeyDown(int keyCode, KeyEvent event){
+        if(event.getAction()==KeyEvent.ACTION_UP){
+            switch (event.getKeyCode()){
+                case KeyEvent.KEYCODE_DPAD_LEFT:
+                    break;
+                case KeyEvent.KEYCODE_DPAD_RIGHT:
+                    break;
+                case KeyEvent.KEYCODE_DPAD_UP:
+                    break;
+                case KeyEvent.KEYCODE_DPAD_DOWN:
+                    break;
+
+            }
+        }
+
+        return false;
+    }
+
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         private RecyclerView tabRecyclerView;
         private TabAdapter tabAdapter;
@@ -72,8 +90,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             tabRecyclerView.setAdapter(tabAdapter);
             tabAdapter.setOnItemFocusChangeListener(new TabAdapter.ItemFocusChange() {
                 @Override
-                public void onFocusChange(View view, boolean hasFocus, int position) {
-                    int  rowPos = (int)itemView.getTag();
+                public void onFocusChange(View view, boolean hasFocus, int position ,int rowPos) {
                     if (hasFocus) {
                         itemView.setBackgroundColor(Color.argb(200,222,133,0));
                     } else {
@@ -87,6 +104,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             // 更新標題文字
             titleTextView.setText("Title_" + (position + 1));
             // 更新橫列的內容
+            tabAdapter.setRowPos(position);
             tabAdapter.setTabContent(item.getTabContent());
             tabAdapter.setLastFocusedPosition(position, 0); // 初始focus為第一個tab
             tabAdapter.notifyDataSetChanged();

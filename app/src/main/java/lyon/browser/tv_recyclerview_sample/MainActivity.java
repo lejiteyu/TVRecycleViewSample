@@ -29,28 +29,32 @@ public class MainActivity extends FragmentActivity {
     String TAG = MainActivity.class.getSimpleName();
     private RecyclerView recyclerView;
     private ItemAdapter itemAdapter;
+    ProgressBar progressBar;
+    View view;
+    TVSearchFragment tvSearchFragment;
+    FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        // 初始化 RecyclerView
-        recyclerView = findViewById(R.id.recyclerView);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        // 產生15列的項目
-        List<Item> itemList = new ArrayList<>();
-        for (int i = 0; i < 55; i++) {
-            itemList.add(new Item());
-        }
-
-        // 設定 Adapter
-        itemAdapter = new ItemAdapter(itemList);
-        recyclerView.setAdapter(itemAdapter);
-
+        setContentView(R.layout.activity_search);
+        view=findViewById(R.id.search_fragment);
+        view.setBackgroundResource(R.color.transparent);
+        view.setBackground(getResources().getDrawable(R.color.transparent));
+        progressBar=(ProgressBar)findViewById(R.id.search_progressbar);
+        progressBar.setVisibility(View.GONE);
+        fragmentManager = getSupportFragmentManager();
+        tvSearchFragment = (TVSearchFragment) fragmentManager.findFragmentById(R.id.search_fragment);
 
     }
 
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        if(itemAdapter!=null){
+            itemAdapter.onkeyDown(keyCode,event);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

@@ -18,7 +18,8 @@ public class TabAdapter  extends RecyclerView.Adapter<TabAdapter.TabViewHolder>{
     private List<String> tabContent;
     private SparseArray<Integer> lastFocusedPositions = new SparseArray<>(); // 记录每行上次被焦点选中的位置
     private SparseArray<Integer> currentFocusedPositions = new SparseArray<>(); // 记录每行当前焦点位置
-
+    private static int selectedPosition = RecyclerView.NO_POSITION;
+    private static int rowPos = 0;
 
     public TabAdapter() {
         this.tabContent = new ArrayList<>();
@@ -63,7 +64,14 @@ public class TabAdapter  extends RecyclerView.Adapter<TabAdapter.TabViewHolder>{
         lastFocusedPositions.put(row, position);
     }
 
+    public void setSelectedPosition(int position) {
+        selectedPosition = position;
+        notifyDataSetChanged();
+    }
 
+    public void setRowPos(int rowPos){
+        this.rowPos=rowPos;
+    }
 
     @Override
     public int getItemCount() {
@@ -99,7 +107,12 @@ public class TabAdapter  extends RecyclerView.Adapter<TabAdapter.TabViewHolder>{
                         tabTextView.setScaleY(1.0f);
                     }
                     if(itemFocusChange!=null){
-                        itemFocusChange.onFocusChange(view, hasFocus, getAdapterPosition());
+                        itemFocusChange.onFocusChange(view, hasFocus, getAdapterPosition() ,rowPos);
+                    }
+
+                    // 更新選中位置
+                    if (hasFocus) {
+                        selectedPosition = getAdapterPosition();
                     }
                 }
             });
@@ -112,7 +125,7 @@ public class TabAdapter  extends RecyclerView.Adapter<TabAdapter.TabViewHolder>{
 
     private static ItemFocusChange itemFocusChange;
     interface ItemFocusChange{
-        public void  onFocusChange(View view, boolean hasFocus , int position);
+        public void  onFocusChange(View view, boolean hasFocus , int position ,int rowPos);
     }
 
     public void setOnItemFocusChangeListener(ItemFocusChange itemFocusChange){

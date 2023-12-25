@@ -134,6 +134,12 @@ public class TVSearchFragment extends SearchSupportFragment implements SearchSup
             @Override
             public void onItemClicked(Presenter.ViewHolder itemViewHolder, Object item, RowPresenter.ViewHolder rowViewHolder, Row row) {
                 Log.d(TAG, "getDefaultItemClickedListener:" + item);
+                Grid2Adapter =  new ArrayObjectAdapter(new CardPresenter(getContext()));
+
+                for (int i = 0; i < 25 ; i++) {
+                    Grid2Adapter.add(new DummyCard("Grid項目3_ " + i));
+                }
+                changeGridTab2(changePos,Grid2Adapter);
             }
         };
     }
@@ -154,6 +160,8 @@ public class TVSearchFragment extends SearchSupportFragment implements SearchSup
     }
 
     int rowCount = 6;
+    int changePos =0;
+    ArrayObjectAdapter Grid2Adapter =  new ArrayObjectAdapter(new CardPresenter(getContext()));
     private void getSearch(){
         synchronized (keyword) {
             // 假設您有一個用於標籤的自定義 ObjectAdapter
@@ -186,38 +194,57 @@ public class TVSearchFragment extends SearchSupportFragment implements SearchSup
 
             int ROW_INDEX =0;
 
-            rowAdapter =  new ArrayObjectAdapter(new CardPresenter(getContext()));
+            Grid2Adapter =  new ArrayObjectAdapter(new CardPresenter(getContext()));
+            changePos = mRowsAdapter.size();
             for (int i = 0; i < 20 ; i++) {
-                ROW_INDEX = mRowsAdapter.size();
-                rowAdapter.add(new DummyCard("Grid項目2_ " + i));
-
-                //rows 換行機制
-                if(i%rowCount==rowCount-1){
-                    if(i<rowCount) {
-                        HeaderItem tab2 = new HeaderItem(ROW_INDEX, "GridTab2_" + 2);
-                        GridRow gridRow2 = new GridRow(tab2, rowAdapter);
-                        mRowsAdapter.add(gridRow2);
-                    }else{
-                        HeaderItem header = new HeaderItem(ROW_INDEX, "");
-                        GridRow gridRow2 = new GridRow(header, rowAdapter);
-                        mRowsAdapter.add(gridRow2);
-                    }
-                    rowAdapter =  new ArrayObjectAdapter(new CardPresenter(getContext()));
-                }
+                Grid2Adapter.add(new DummyCard("Grid項目2_ " + i));
             }
-            if(rowAdapter.size()>0) {
-                if (ROW_INDEX >= rowCount) {
-                    HeaderItem header = new HeaderItem(ROW_INDEX, "");
-                    GridRow gridRow2 = new GridRow(header, rowAdapter);
-                    mRowsAdapter.add(gridRow2);
-                } else {
-                    HeaderItem tab2 = new HeaderItem(ROW_INDEX, "GridTab2_" + 2);
-                    GridRow gridRow2 = new GridRow(tab2, rowAdapter);
-                    mRowsAdapter.add(gridRow2);
-
-                }
-            }
-            mRowsAdapter.notifyArrayItemRangeChanged(0,mRowsAdapter.size()-1);
+            changeGridTab2(changePos,Grid2Adapter);
         }
+    }
+
+    private void changeGridTab2(int ROW_INDEX,ArrayObjectAdapter Grid2Adapter){
+        ArrayObjectAdapter Adapter =  new ArrayObjectAdapter(new CardPresenter(getContext()));
+        for (int i = 0; i < Grid2Adapter.size() ; i++) {
+            ROW_INDEX = mRowsAdapter.size();
+            Adapter.add(Grid2Adapter.get(i));
+            //rows 換行機制
+            if (i % rowCount == rowCount - 1) {
+                if (i < rowCount) {
+                    HeaderItem tab2 = new HeaderItem(ROW_INDEX, "GridTab2_" + 2);
+                    GridRow gridRow2 = new GridRow(tab2, Adapter);
+                    if(ROW_INDEX>changePos+(i / rowCount)){
+                        mRowsAdapter.replace(changePos+(i / rowCount),gridRow2);
+                    }else
+                        mRowsAdapter.add(gridRow2);
+                } else {
+                    HeaderItem header = new HeaderItem(ROW_INDEX, "");
+                    GridRow gridRow2 = new GridRow(header, Adapter);
+                    if(ROW_INDEX>changePos+(i / rowCount)){
+                        mRowsAdapter.replace(changePos+(i / rowCount),gridRow2);
+                    }else
+                    mRowsAdapter.add(gridRow2);
+                }
+                Adapter =  new ArrayObjectAdapter(new CardPresenter(getContext()));
+            }
+        }
+        if(Adapter.size()>0) {
+            if (ROW_INDEX >= rowCount) {
+                HeaderItem header = new HeaderItem(ROW_INDEX, "");
+                GridRow gridRow2 = new GridRow(header, Adapter);
+                if(ROW_INDEX>changePos+changePos+(Grid2Adapter.size() / rowCount)){
+                    mRowsAdapter.replace(changePos+changePos+(Grid2Adapter.size() / rowCount),gridRow2);
+                }else
+                mRowsAdapter.add(gridRow2);
+            } else {
+                HeaderItem tab2 = new HeaderItem(ROW_INDEX, "GridTab2_" + 2);
+                GridRow gridRow2 = new GridRow(tab2, Adapter);
+                if(ROW_INDEX>changePos+changePos+(Grid2Adapter.size() / rowCount)){
+                    mRowsAdapter.replace(changePos+changePos+(Grid2Adapter.size() / rowCount),gridRow2);
+                }else
+                    mRowsAdapter.add(gridRow2);
+            }
+        }
+        mRowsAdapter.notifyArrayItemRangeChanged(changePos,mRowsAdapter.size()-1);
     }
 }

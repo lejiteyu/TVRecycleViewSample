@@ -20,6 +20,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.ProgressBar;
 
 import java.util.ArrayList;
@@ -27,34 +28,33 @@ import java.util.List;
 
 public class MainActivity extends FragmentActivity {
     String TAG = MainActivity.class.getSimpleName();
-    private RecyclerView recyclerView;
-    private ItemAdapter itemAdapter;
-    ProgressBar progressBar;
-    View view;
-    TVSearchFragment tvSearchFragment;
-    FragmentManager fragmentManager;
+    Context context;
+    Button goRecycleViewBtn;
+    Button goTvRecycleViewBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
-        view=findViewById(R.id.search_fragment);
-        view.setBackgroundResource(R.color.transparent);
-        view.setBackground(getResources().getDrawable(R.color.transparent));
-        progressBar=(ProgressBar)findViewById(R.id.search_progressbar);
-        progressBar.setVisibility(View.GONE);
-        fragmentManager = getSupportFragmentManager();
-        tvSearchFragment = (TVSearchFragment) fragmentManager.findFragmentById(R.id.search_fragment);
+        setContentView(R.layout.activity_main);
+        context = this;
+        goRecycleViewBtn = findViewById(R.id.go_recycleView);
+        goTvRecycleViewBtn = findViewById(R.id.go_tv_RecycleView);
 
+        goRecycleViewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, GoRecycleViewActicity.class);
+                startActivity(intent);
+            }
+        });
+
+        goTvRecycleViewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, TVRecycleViewActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-
-        if(itemAdapter!=null){
-            itemAdapter.onkeyDown(keyCode,event);
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 }

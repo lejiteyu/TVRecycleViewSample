@@ -1,4 +1,4 @@
-package lyon.browser.tv_recyclerview_sample;
+package lyon.browser.tv_recyclerview_sample.cardView;
 
 import android.text.Html;
 import android.text.TextUtils;
@@ -14,6 +14,9 @@ import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowHeaderPresenter;
 import androidx.leanback.widget.RowPresenter;
+
+import lyon.browser.tv_recyclerview_sample.R;
+import lyon.browser.tv_recyclerview_sample.Utils;
 
 public class GridRowPresenter extends ListRowPresenter {
     String TAG = GridRowPresenter.class.getSimpleName();

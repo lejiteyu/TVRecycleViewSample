@@ -1,9 +1,11 @@
-package lyon.browser.tv_recyclerview_sample;
+package lyon.browser.tv_recyclerview_sample.Fragment;
 
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
@@ -12,6 +14,7 @@ import androidx.leanback.app.SearchSupportFragment;
 import androidx.leanback.widget.ArrayObjectAdapter;
 import androidx.leanback.widget.ClassPresenterSelector;
 import androidx.leanback.widget.HeaderItem;
+import androidx.leanback.widget.HorizontalGridView;
 import androidx.leanback.widget.ListRow;
 import androidx.leanback.widget.ListRowPresenter;
 import androidx.leanback.widget.ObjectAdapter;
@@ -21,24 +24,39 @@ import androidx.leanback.widget.Presenter;
 import androidx.leanback.widget.Row;
 import androidx.leanback.widget.RowPresenter;
 import androidx.leanback.widget.SearchOrbView;
-import androidx.leanback.widget.VerticalGridPresenter;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import lyon.browser.tv_recyclerview_sample.R;
+import lyon.browser.tv_recyclerview_sample.Utils;
+import lyon.browser.tv_recyclerview_sample.cardView.CardPresenter;
+import lyon.browser.tv_recyclerview_sample.cardView.GridRow;
+import lyon.browser.tv_recyclerview_sample.cardView.GridRowPresenter;
 
 public class TVSearchFragment extends SearchSupportFragment implements SearchSupportFragment.SearchResultProvider{
     private final String TAG = TVSearchFragment.class.getSimpleName();
     ArrayObjectAdapter mRowsAdapter;
     public String keyword="";
+    HorizontalGridView horizontalGridView;
+    View view;
+    HorizontalGridView listRowView;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // 使用標籤設置行
-
         ClassPresenterSelector rowPresenterSelector = new ClassPresenterSelector();
+
+        ListRowPresenter listRowPresenter =new ListRowPresenter(){
+            @Override
+            protected void onBindRowViewHolder(RowPresenter.ViewHolder holder, Object item) {
+                super.onBindRowViewHolder(holder, item);
+                ViewHolder vh = (ViewHolder) holder;
+                listRowView = vh.getGridView();
+            }
+        };
         GridRowPresenter gridRowPresenter = new GridRowPresenter(){
             @Override
             protected void onBindRowViewHolder(RowPresenter.ViewHolder holder, Object item) {
@@ -47,6 +65,7 @@ public class TVSearchFragment extends SearchSupportFragment implements SearchSup
                 GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), rowCount);
                 gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);//content 置中
                 vh.getGridView().setLayoutManager(gridLayoutManager);
+                horizontalGridView = vh.getGridView();
                 vh.getGridView().setGravity(Gravity.CENTER_HORIZONTAL);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
                 layoutParams.gravity = Gravity.CENTER_HORIZONTAL;
@@ -75,10 +94,56 @@ public class TVSearchFragment extends SearchSupportFragment implements SearchSup
 
         getSearch();
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.lb_search_fragment, container, false);
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        searchOrbView = (SearchOrbView)view.findViewById(R.id.lb_search_bar_speech_orb);
+        searchOrbView.requestFocus();
+        return view;
+    }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         setUserVisibleHint(true);
+    }
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if(event.getAction()==KeyEvent.ACTION_DOWN){
+            if(keyCode == KeyEvent.KEYCODE_DPAD_UP){
+                if (horizontalGridView !=null && horizontalGridView.isFocused()
+                ) {
+                    if(listRowView!=null){
+                        listRowView.requestFocus();
+                        return true;
+                    }
+                }else if(listRowView!=null && listRowView.isFocused()){
+                    if(searchOrbView!=null){
+                        searchOrbView.requestFocus();
+                        return true;
+                    }
+                }
+            }else if(keyCode == KeyEvent.KEYCODE_DPAD_DOWN){
+                if (searchOrbView!=null && searchOrbView.isFocused()
+                ) {
+                    if(listRowView!=null && listRowView!=null){
+                        listRowView.requestFocus();
+                        return true;
+                    }
+                }else if(listRowView!=null && listRowView.isFocused()){
+                    if(horizontalGridView!=null){
+                        horizontalGridView.requestFocus();
+                        return true;
+                    }
+                }
+            }
+        }
+
+
+
+        return false;
     }
 
 
@@ -102,8 +167,8 @@ public class TVSearchFragment extends SearchSupportFragment implements SearchSup
     }
 
     // 用於演示目的的虛擬卡片類別
-    static class DummyCard {
-        String title;
+    public static class DummyCard {
+        public String title;
 
         DummyCard(String title) {
             this.title = title;
@@ -183,7 +248,7 @@ public class TVSearchFragment extends SearchSupportFragment implements SearchSup
 
             ArrayObjectAdapter rowAdapter =  new ArrayObjectAdapter(new CardPresenter(getContext()));
             HeaderItem tab = new HeaderItem(1, "GridTab_" + 1);
-            for(int j=0;j<20;j++) {
+            for(int j=0;j<40;j++) {
 
                 rowAdapter.add(new DummyCard("Grid項目1_ " + j));
             }

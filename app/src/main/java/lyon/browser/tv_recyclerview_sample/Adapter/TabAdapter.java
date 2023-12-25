@@ -1,8 +1,6 @@
-package lyon.browser.tv_recyclerview_sample;
+package lyon.browser.tv_recyclerview_sample.Adapter;
 
-import android.graphics.Color;
 import android.util.SparseArray;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import lyon.browser.tv_recyclerview_sample.R;
 
 public class TabAdapter  extends RecyclerView.Adapter<TabAdapter.TabViewHolder>{
     private List<String> tabContent;

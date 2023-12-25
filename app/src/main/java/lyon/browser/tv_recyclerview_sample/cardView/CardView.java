@@ -1,4 +1,4 @@
-package lyon.browser.tv_recyclerview_sample;
+package lyon.browser.tv_recyclerview_sample.cardView;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,10 +7,11 @@ import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.leanback.widget.BaseCardView;
+
+import lyon.browser.tv_recyclerview_sample.R;
 
 public class CardView extends BaseCardView {
     String TAG = CardView.class.getSimpleName();

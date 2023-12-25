@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".Activity.MainActivity">
 
     <LinearLayout
         android:id="@+id/recyclerView"
@@ -20,6 +20,12 @@
         <Button
             android:id="@+id/go_tv_RecycleView"
             android:text="by tv RecycleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/go_tv_HorizontalGridView"
+            android:text="by tv Horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>

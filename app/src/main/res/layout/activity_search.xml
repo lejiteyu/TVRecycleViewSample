@@ -9,7 +9,7 @@
 
     <fragment
         android:id="@+id/search_fragment"
-        android:name="lyon.browser.tv_recyclerview_sample.TVSearchFragment"
+        android:name="lyon.browser.tv_recyclerview_sample.Fragment.TVSearchFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context="net.fetnet.fetvod.tv.tvSearch.TVSearchActivity"

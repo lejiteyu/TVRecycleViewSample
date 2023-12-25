@@ -1,4 +1,4 @@
-package lyon.browser.tv_recyclerview_sample;
+package lyon.browser.tv_recyclerview_sample.cardView;
 
 import androidx.leanback.widget.HeaderItem;
 import androidx.leanback.widget.ListRow;

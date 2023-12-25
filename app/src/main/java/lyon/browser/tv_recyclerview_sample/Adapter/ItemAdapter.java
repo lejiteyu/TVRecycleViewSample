@@ -1,7 +1,6 @@
-package lyon.browser.tv_recyclerview_sample;
+package lyon.browser.tv_recyclerview_sample.Adapter;
 
 
-import android.content.ClipData;
 import android.graphics.Color;
 import android.util.SparseArray;
 import android.view.KeyEvent;
@@ -15,8 +14,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
+import lyon.browser.tv_recyclerview_sample.R;
+import lyon.browser.tv_recyclerview_sample.Utils;
+
 public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder>{
     private List<Item> itemList;
+    String title;
+    public ItemAdapter(List<Item> itemList,String title) {
+        this.itemList = itemList;
+        this.title=title;
+    }
+
     public ItemAdapter(List<Item> itemList) {
         this.itemList = itemList;
     }
@@ -26,7 +34,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_layout, parent, false);
-        return new ItemViewHolder(view);
+        return new ItemViewHolder(view,title);
     }
 
     @Override
@@ -49,6 +57,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 case KeyEvent.KEYCODE_DPAD_RIGHT:
                     break;
                 case KeyEvent.KEYCODE_DPAD_UP:
+
                     break;
                 case KeyEvent.KEYCODE_DPAD_DOWN:
                     break;
@@ -63,11 +72,15 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
         private RecyclerView tabRecyclerView;
         private TabAdapter tabAdapter;
         private TextView titleTextView;
+        private String title;
 
-        public ItemViewHolder(View itemView) {
+        public ItemViewHolder(View itemView,String title) {
             super(itemView);
+            this.title=title;
             tabRecyclerView = itemView.findViewById(R.id.tabRecyclerView);
             titleTextView = itemView.findViewById(R.id.titleTextView);
+            titleTextView.setTextColor(Color.WHITE);
+            titleTextView.setTextSize(Utils.dpToPx(itemView.getContext(), 32));
             // 設定橫列的 RecyclerView
             LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
             tabRecyclerView.setLayoutManager(layoutManager);
@@ -87,6 +100,7 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
             // 設定橫列的 Adapter
             tabAdapter = new TabAdapter();
+
             tabRecyclerView.setAdapter(tabAdapter);
             tabAdapter.setOnItemFocusChangeListener(new TabAdapter.ItemFocusChange() {
                 @Override
@@ -102,12 +116,23 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
 
         public void bind(Item item, int position) {
             // 更新標題文字
-            titleTextView.setText("Title_" + (position + 1));
+            if(title!=null){
+                titleTextView.setText(title);
+            }else {
+                titleTextView.setText("Title_" + (position + 1));
+            }
             // 更新橫列的內容
             tabAdapter.setRowPos(position);
             tabAdapter.setTabContent(item.getTabContent());
             tabAdapter.setLastFocusedPosition(position, 0); // 初始focus為第一個tab
             tabAdapter.notifyDataSetChanged();
+
+            tabAdapter.setOnItemFocusChangeListener(new TabAdapter.ItemFocusChange() {
+                @Override
+                public void onFocusChange(View view, boolean hasFocus, int position, int rowPos) {
+
+                }
+            });
         }
     }
 }

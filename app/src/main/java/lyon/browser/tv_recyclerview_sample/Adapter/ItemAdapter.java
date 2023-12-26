@@ -98,8 +98,22 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                 }
             });
 
+
+        }
+
+        public void bind(Item item, int rowPos) {
+            // 更新標題文字
+            if(title!=null){
+                titleTextView.setText(title);
+            }else {
+                titleTextView.setText("Title_" + (rowPos + 1));
+            }
+            tabAdapter = new TabAdapter(rowPos);
+            // 更新橫列的內容
+            tabAdapter.setRowPos(rowPos);
+            tabAdapter.setTabContent(item.getTabContent());
             // 設定橫列的 Adapter
-            tabAdapter = new TabAdapter();
+
 
             tabRecyclerView.setAdapter(tabAdapter);
             tabAdapter.setOnItemFocusChangeListener(new TabAdapter.ItemFocusChange() {
@@ -112,19 +126,6 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
                     }
                 }
             });
-        }
-
-        public void bind(Item item, int position) {
-            // 更新標題文字
-            if(title!=null){
-                titleTextView.setText(title);
-            }else {
-                titleTextView.setText("Title_" + (position + 1));
-            }
-            // 更新橫列的內容
-            tabAdapter.setRowPos(position);
-            tabAdapter.setTabContent(item.getTabContent());
-            tabAdapter.setLastFocusedPosition(position, 0); // 初始focus為第一個tab
             tabAdapter.notifyDataSetChanged();
 
             tabAdapter.setOnItemFocusChangeListener(new TabAdapter.ItemFocusChange() {

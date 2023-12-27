@@ -70,7 +70,7 @@ public class TVHorizontalGridViewActivity extends Activity {
         setTabRow("first title",item.getTabContent());
         Item item2 =new Item("item2",30);
         setTabRow("2 title",item2.getTabContent());
-        Item item3=new Item("item3",300);
+        Item item3=new Item("item3",60);
         setGrieRow("grid",item3.getTabContent());
 
 
@@ -142,8 +142,13 @@ public class TVHorizontalGridViewActivity extends Activity {
                         if(v instanceof HorizontalGridView){
                             HorizontalGridView horizontalGridView = (HorizontalGridView)v;
                             Log.e(TAG,"rowP:"+rowP+",pos:"+pos);
-                            if(pos<horizontalGridView.getAdapter().getItemCount())
-                                horizontalGridView.getChildAt(pos).requestFocus();
+                            if(pos<horizontalGridView.getAdapter().getItemCount()) {
+                                try {
+                                    horizontalGridView.getLayoutManager().findViewByPosition(pos).requestFocus();
+                                }catch (NullPointerException e){
+
+                                }
+                            }
                             Toast.makeText(context,"tabAdapter has focus:"+hasFocus+" ,row:"+rowP+", position:"+position+",pos:"+pos,Toast.LENGTH_LONG).show();
 
                         }
@@ -159,7 +164,7 @@ public class TVHorizontalGridViewActivity extends Activity {
             @Override
             public void onClick(View view, int position, int rowPos) {
                 horizontalGridView.setSelectedPosition(position);
-
+                tabAdapter.notifyDataSetChanged();
             }
         });
         tabAdapter.setTabContent(list);
@@ -209,7 +214,7 @@ public class TVHorizontalGridViewActivity extends Activity {
         GridLayoutManager gridLayoutManager = new GridLayoutManager(context,gridRowNum);
         GridView.setLayoutManager(gridLayoutManager);
         GridView.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        TabAdapter tabAdapter = new TabAdapter(rowPos);
+        TabAdapter tabAdapter = new TabAdapter(rowPos,gridRowNum);
         GridView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -223,24 +228,36 @@ public class TVHorizontalGridViewActivity extends Activity {
             @Override
             public void onFocusChange(View view, boolean hasFocus, int position, int rowP) {
                 GridViewPos = position;
-                if(rowP!=rowPosold){
-                    rowPosold = rowP;
-                    int pos= lastFocusedPositions.get(rowP,0);
-                    View v = contentLyout.getChildAt(getRowItem((rowP)));
-                    if(v instanceof HorizontalGridView){
-                        HorizontalGridView horizontalGridView = (HorizontalGridView)v;
-                        Log.e(TAG,"rowP:"+rowP+",pos:"+pos);
-                        if(pos<horizontalGridView.getAdapter().getItemCount()) {
-                            horizontalGridView.setSelectedPosition(pos);
-//                            horizontalGridView.getChildAt(pos).requestFocus();
+                if(hasFocus) {
+                    if (rowP != rowPosold) {
+                        rowPosold = rowP;
+                        int pos = lastFocusedPositions.get(rowP, 0);
+                        View v = contentLyout.getChildAt(getRowItem((rowP)));
+                        if (v instanceof HorizontalGridView) {
+                            HorizontalGridView horizontalGridView = (HorizontalGridView) v;
+                            Log.e(TAG, "rowP:" + rowP + ",pos:" + pos);
+                            if (pos < horizontalGridView.getAdapter().getItemCount()) {
+                                try {
+                                    horizontalGridView.getLayoutManager().findViewByPosition(pos).requestFocus();
+                                } catch (NullPointerException e) {
+
+                                }
+                            }
+                            Toast.makeText(context, "tabAdapter has focus:" + hasFocus + " ,row:" + rowP + ", position:" + position + ",pos:" + pos + ",p:" + position % gridRowNum, Toast.LENGTH_LONG).show();
+
                         }
-                        Toast.makeText(context,"tabAdapter has focus:"+hasFocus+" ,row:"+rowP+", position:"+position+",pos:"+pos,Toast.LENGTH_LONG).show();
+                    } else {
+                        lastFocusedPositions.put(rowP, position);
+                        Toast.makeText(context, "tabAdapter has focus:" + hasFocus + " ,row:" + rowP + ", position:" + position + ",p:" + position % gridRowNum, Toast.LENGTH_LONG).show();
+                        if (position > tabAdapter.getItemCount() - gridRowNum) {
+                            int count =  tabAdapter.getItemCount();
+                            int addCount = 30;
+                            for (int i =count; i < count + addCount; i++)
+                                list.add("preLoad_" + i);
 
+                            tabAdapter.notifyItemRangeChanged(position,tabAdapter.getItemCount()-1);
+                        }
                     }
-                }else{
-                    lastFocusedPositions.put(rowP,position);
-                    Toast.makeText(context,"tabAdapter has focus:"+hasFocus+" ,row:"+rowP+", position:"+position,Toast.LENGTH_LONG).show();
-
                 }
             }
         });
@@ -254,13 +271,22 @@ public class TVHorizontalGridViewActivity extends Activity {
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
+
         if(keyCode == KeyEvent.KEYCODE_BACK  ){
             if(GridView.hasFocus()){
-                View view = contentLyout.getChildAt(1);
+                int rowP = 1;
+                View view = contentLyout.getChildAt(rowP);
                 if(view instanceof HorizontalGridView){
                     HorizontalGridView horizontalGridView = (HorizontalGridView)view;
-                    horizontalGridView.scrollToPosition(0);
-                    horizontalGridView.getChildAt(10).requestFocus();
+                    int pos= lastFocusedPositions.get(rowP,0);
+                    Log.e(TAG,"rowP:"+rowP+",pos:"+pos);
+                    if(pos<horizontalGridView.getAdapter().getItemCount()) {
+                        try {
+                            horizontalGridView.getLayoutManager().findViewByPosition(pos).requestFocus();
+                        }catch (NullPointerException e){
+
+                        }
+                    }
                     rowPosold=0;
                     return true;
                 }

@@ -39,7 +39,7 @@ public class TabAdapter  extends RecyclerView.Adapter<TabAdapter.TabViewHolder>{
     @Override
     public TabViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.tab_layout, parent, false);
-        return new TabViewHolder(view , itemFocusChange ,rowPos, rowNum);
+        return new TabViewHolder(view , itemFocusChange ,rowPos, rowNum,itemClick);
     }
 
     @Override
@@ -113,7 +113,7 @@ public class TabAdapter  extends RecyclerView.Adapter<TabAdapter.TabViewHolder>{
     public static class TabViewHolder extends RecyclerView.ViewHolder {
         private TextView tabTextView;
 
-        public TabViewHolder( View itemView, ItemFocusChange itemFocusChange, int rowPos, int rowNum) {
+        public TabViewHolder( View itemView, ItemFocusChange itemFocusChange, int rowPos, int rowNum ,ItemClick itemClick) {
             super(itemView);
             tabTextView = itemView.findViewById(R.id.tabTextView);
 
@@ -125,15 +125,6 @@ public class TabAdapter  extends RecyclerView.Adapter<TabAdapter.TabViewHolder>{
                     Toast.makeText(view.getContext(), "Tab Clicked: " + tabTextView.getText(), Toast.LENGTH_SHORT).show();
                     if(itemClick!=null)
                         itemClick.onClick(view,getAdapterPosition() ,rowPos);
-                    if(itemView.isFocused()){
-                        itemView.setSelected(true);
-                    }else{
-                        itemView.setSelected(false);
-                    }
-
-//                    itemView.clearFocus();
-                    itemView.requestFocus();
-                    //itemView.setSelected(true);
                 }
             });
 

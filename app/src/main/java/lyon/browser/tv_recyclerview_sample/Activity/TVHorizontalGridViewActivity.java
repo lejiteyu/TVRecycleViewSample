@@ -72,7 +72,11 @@ public class TVHorizontalGridViewActivity extends Activity {
         setTabRow("2 title",item2.getTabContent());
         Item item3=new Item("item3",60);
         setGrieRow("grid",item3.getTabContent());
-
+        //Grid 應為最下面一物件, 否則需要增加scrollView 來滑動 將導致 有兩個scrollview 重疊 而無法正常工作！
+//        Item item4 =new Item("item4",30);
+//        setTabRow("4 title",item4.getTabContent());
+//        Item item5 =new Item("item5",30);
+//        setTabRow("5 title",item5.getTabContent());
 
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -163,8 +167,11 @@ public class TVHorizontalGridViewActivity extends Activity {
         tabAdapter.setOnItemClickListener(new TabAdapter.ItemClick() {
             @Override
             public void onClick(View view, int position, int rowPos) {
-                horizontalGridView.setSelectedPosition(position);
-                tabAdapter.notifyDataSetChanged();
+                try {
+                    horizontalGridView.getLayoutManager().findViewByPosition(position).requestFocus();
+                } catch (NullPointerException e) {
+                    Log.d(TAG,""+Utils.FormatStackTrace(e));
+                }
             }
         });
         tabAdapter.setTabContent(list);
@@ -183,6 +190,7 @@ public class TVHorizontalGridViewActivity extends Activity {
     HorizontalGridView GridView;
     int GridViewPos = 0;
     int gridRowNum = 7;
+    int preLoadTime =3;
     public void setGrieRow(String title ,List<String> list){
         TextView titleView = new TextView(context);
         titleView.setTextColor(Color.WHITE);
@@ -224,6 +232,28 @@ public class TVHorizontalGridViewActivity extends Activity {
                 }
             }
         });
+        tabAdapter.setOnItemClickListener(new TabAdapter.ItemClick() {
+            @Override
+            public void onClick(View view, int position, int rowP) {
+                lastFocusedPositions.put(rowP, position);
+                Toast.makeText(context, "tabAdapter  ,row:" + rowP + ", position:" + position + ",p:" + position % gridRowNum, Toast.LENGTH_LONG).show();
+
+                if (position > tabAdapter.getItemCount() - gridRowNum && preLoadTime>0) {
+                    preLoadTime--;
+                    int count =  tabAdapter.getItemCount();
+                    int addCount = 30;
+                    for (int i =count; i < count + addCount; i++)
+                        list.add("preLoad_" + i);
+
+                    tabAdapter.notifyItemRangeChanged(position,tabAdapter.getItemCount()-1);
+                }
+                try {
+                    GridView.getLayoutManager().findViewByPosition(position).requestFocus();
+                } catch (NullPointerException e) {
+                    Log.d(TAG,""+Utils.FormatStackTrace(e));
+                }
+            }
+        });
         tabAdapter.setOnItemFocusChangeListener(new TabAdapter.ItemFocusChange() {
             @Override
             public void onFocusChange(View view, boolean hasFocus, int position, int rowP) {
@@ -249,7 +279,8 @@ public class TVHorizontalGridViewActivity extends Activity {
                     } else {
                         lastFocusedPositions.put(rowP, position);
                         Toast.makeText(context, "tabAdapter has focus:" + hasFocus + " ,row:" + rowP + ", position:" + position + ",p:" + position % gridRowNum, Toast.LENGTH_LONG).show();
-                        if (position > tabAdapter.getItemCount() - gridRowNum) {
+                        if (position > tabAdapter.getItemCount() - gridRowNum && preLoadTime>0) {
+                            preLoadTime--;
                             int count =  tabAdapter.getItemCount();
                             int addCount = 30;
                             for (int i =count; i < count + addCount; i++)

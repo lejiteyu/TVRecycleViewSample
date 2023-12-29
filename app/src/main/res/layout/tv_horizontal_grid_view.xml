@@ -12,13 +12,23 @@
         android:layout_height="wrap_content"
         android:clipChildren="false"
         />
-    <LinearLayout
-        android:id="@+id/content_layout"
-        android:layout_marginTop="@dimen/lb_search_bar_padding_top"
-        android:orientation="vertical"
-        android:layout_below="@+id/lb_search_bar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+<!--    <ScrollView-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        android:layout_below="@+id/lb_search_bar"-->
+<!--        android:layout_marginBottom="20dp"-->
+<!--        android:paddingBottom="20dp"-->
+<!--        >-->
+        <LinearLayout
+            android:id="@+id/content_layout"
+            android:layout_marginTop="@dimen/lb_search_bar_padding_top"
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_below="@+id/lb_search_bar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    </LinearLayout>
+        </LinearLayout>
+<!--    </ScrollView>-->
+
 </RelativeLayout>

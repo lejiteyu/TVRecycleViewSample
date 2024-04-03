@@ -2,6 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="lyon.browser.tv_recyclerview_sample">
 
+    <uses-feature
+        android:name="android.software.leanback"
+        android:required="false" />
+
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

@@ -4,7 +4,7 @@ plugins {
 
 android {
     compileSdk 33
-
+    buildToolsVersion '30.0.2' //#20210605 啟用androidX
     defaultConfig {
         applicationId "lyon.browser.tv_recyclerview_sample"
         minSdk 21
@@ -29,11 +29,10 @@ android {
 
 dependencies {
 
-    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.6.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
-    implementation 'androidx.leanback:leanback:1.0.0'
-    testImplementation 'junit:junit:4.+'
-    androidTestImplementation 'androidx.test.ext:junit:1.1.5'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.leanback:leanback:1.1.0-rc02'
+    testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 }

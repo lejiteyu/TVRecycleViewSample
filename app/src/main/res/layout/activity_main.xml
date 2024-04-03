@@ -14,6 +14,7 @@
         <Button
             android:id="@+id/go_recycleView"
             android:text="by RecycleView"
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -25,7 +26,7 @@
 
         <Button
             android:id="@+id/go_tv_HorizontalGridView"
-            android:text="by tv Horizontal"
+            android:text="by tv Horizontal(Recommend)"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>

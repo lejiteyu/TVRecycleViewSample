@@ -85,6 +85,9 @@ public class ItemAdapter extends RecyclerView.Adapter<ItemAdapter.ItemViewHolder
             LinearLayoutManager layoutManager = new LinearLayoutManager(itemView.getContext(), LinearLayoutManager.HORIZONTAL, false);
             tabRecyclerView.setLayoutManager(layoutManager);
 
+            android.view.ViewGroup.LayoutParams layoutParams = new android.view.ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,Utils.dpToPx(itemView.getContext(),100));
+            tabRecyclerView.setPadding(Utils.dpToPx(itemView.getContext(),20),Utils.dpToPx(itemView.getContext(),20),Utils.dpToPx(itemView.getContext(),20),Utils.dpToPx(itemView.getContext(),20));
+            tabRecyclerView.setLayoutParams(layoutParams);
             // 為整個 itemView 添加 focus 變化監聽器
             itemView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
                 @Override

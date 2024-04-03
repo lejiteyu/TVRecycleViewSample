@@ -14,6 +14,7 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -40,6 +41,9 @@ import lyon.browser.tv_recyclerview_sample.R;
 import lyon.browser.tv_recyclerview_sample.Utils;
 import lyon.browser.tv_recyclerview_sample.cardView.CardPresenter;
 
+/**
+ * 鍵盤或是手指皆可以支援
+ */
 public class TVHorizontalGridViewActivity extends Activity {
     String TAG = TVHorizontalGridViewActivity.class.getSimpleName();
     Context context;
@@ -51,7 +55,6 @@ public class TVHorizontalGridViewActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.lb_search_fragment);
         setContentView(R.layout.tv_horizontal_grid_view);
         context = this;
         searchBar = findViewById(R.id.lb_search_bar);
@@ -176,7 +179,9 @@ public class TVHorizontalGridViewActivity extends Activity {
         });
         tabAdapter.setTabContent(list);
         horizontalGridView.setAdapter(tabAdapter);
-
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,Utils.dpToPx(context,100));
+        horizontalGridView.setPadding(Utils.dpToPx(context,20),Utils.dpToPx(context,20),Utils.dpToPx(context,20),Utils.dpToPx(context,20));
+        horizontalGridView.setLayoutParams(layoutParams);
         horizontalGridView.setSelectedPosition(0);
         contentLyout.addView(horizontalGridView);
         return  horizontalGridView;

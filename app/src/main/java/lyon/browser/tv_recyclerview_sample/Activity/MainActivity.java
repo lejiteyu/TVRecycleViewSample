@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import lyon.browser.tv_recyclerview_sample.Activity.kotlin.TVKotlinActivity;
 import lyon.browser.tv_recyclerview_sample.R;
 
 public class MainActivity extends FragmentActivity {
@@ -16,6 +17,8 @@ public class MainActivity extends FragmentActivity {
     Button goRecycleViewBtn;
     Button goTvRecycleViewBtn;
     Button goTvHorizonzlGridBtn;
+
+    Button goKotlinHorizontalGridView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,7 +27,7 @@ public class MainActivity extends FragmentActivity {
         goRecycleViewBtn = findViewById(R.id.go_recycleView);
         goTvRecycleViewBtn = findViewById(R.id.go_tv_RecycleView);
         goTvHorizonzlGridBtn = findViewById(R.id.go_tv_HorizontalGridView);
-
+        goKotlinHorizontalGridView = findViewById(R.id.go_kotlin_HorizontalGridView);
 
         goRecycleViewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,6 +50,15 @@ public class MainActivity extends FragmentActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(context, TVHorizontalGridViewActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        goKotlinHorizontalGridView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, TVKotlinActivity.class);
                 startActivity(intent);
             }
         });

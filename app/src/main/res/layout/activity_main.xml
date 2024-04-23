@@ -9,24 +9,38 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_centerInParent="true"
         android:orientation="vertical"
         android:padding="16dp" >
         <Button
             android:id="@+id/go_recycleView"
             android:text="by RecycleView"
-
+            android:background="@drawable/btn_dark"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <Button
             android:id="@+id/go_tv_RecycleView"
             android:text="by tv RecycleView"
+            android:background="@drawable/btn_dark"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
         <Button
             android:id="@+id/go_tv_HorizontalGridView"
             android:text="by tv Horizontal(Recommend)"
+            android:background="@drawable/btn_dark"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <Button
+            android:id="@+id/go_kotlin_HorizontalGridView"
+            android:text="by tv Horizontal(Recommend) on kotlin"
+            android:background="@drawable/btn_dark"
+            android:textColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
     </LinearLayout>

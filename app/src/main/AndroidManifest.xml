@@ -26,6 +26,7 @@
         <activity android:name=".Activity.GoRecycleViewActicity"/>
         <activity android:name=".Activity.TVRecycleViewActivity"/>
         <activity android:name=".Activity.TVHorizontalGridViewActivity"/>
+        <activity android:name=".Activity.kotlin.TVKotlinActivity"/>
     </application>
 
 </manifest>

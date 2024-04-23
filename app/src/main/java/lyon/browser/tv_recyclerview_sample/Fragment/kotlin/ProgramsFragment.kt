@@ -46,6 +46,9 @@ class ProgramsFragment : Fragment() {
         val channel = arguments?.getParcelable<Channel>(ARG_CHANNEL)
         channel?.let {
             updateProgramsList(it)
+            val programs=mainViewModel.getProgramsForCategory(it.name)
+            if(programs!=null)
+                setupProgramsList(programs,it.name, channel)
         }
     }
 
@@ -55,10 +58,11 @@ class ProgramsFragment : Fragment() {
         binding.icon.setImageDrawable(activity?.resources?.getDrawable(channel.icon))
     }
 
-    private fun setupProgramsList(programs: List<Program>) {
+    private fun setupProgramsList(programs: List<Program>,title:String, channel: Channel) {
         binding.programsList.apply {
-            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-            adapter = ProgramAdapter(programs)
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            adapter = ProgramAdapter(programs,title,channel)
+
         }
     }
 }

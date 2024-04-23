@@ -32,13 +32,13 @@ class MainViewModel  : ViewModel() {
     )
 
     val channelCategories = listOf(
-        ChannelCategory("推薦", listOf(Program("推薦1"), Program("推薦2"))),
-        ChannelCategory("電影", listOf(Program("電影1"), Program("電影2"))),
-        ChannelCategory("戲劇", listOf(Program("戲劇1"), Program("戲劇2"))),
-        ChannelCategory("動漫", listOf(Program("動漫1"), Program("動漫2"))),
-        ChannelCategory("綜藝", listOf(Program("綜藝1"), Program("綜藝2"))),
-        ChannelCategory("排行榜", listOf(Program("排行榜1"), Program("排行榜2"))),
-        ChannelCategory("其他", listOf(Program("其他1"), Program("其他2")))
+        ChannelCategory("推薦", listOf(Program("推薦1"), Program("推薦2"), Program("推薦3"), Program("推薦4"))),
+        ChannelCategory("電影", listOf(Program("電影1"), Program("電影2"), Program("電影3"))),
+        ChannelCategory("戲劇", listOf(Program("戲劇1"), Program("戲劇2"), Program("戲劇3"), Program("戲劇4"), Program("戲劇5"))),
+        ChannelCategory("動漫", listOf(Program("動漫1"), Program("動漫2"), Program("動漫3"), Program("動漫4"))),
+        ChannelCategory("綜藝", listOf(Program("綜藝1"), Program("綜藝2"), Program("綜藝3"))),
+        ChannelCategory("排行榜", listOf(Program("排行榜1"), Program("排行榜2"), Program("排行榜3"))),
+        ChannelCategory("其他", listOf(Program("其他1"), Program("其他2"), Program("其他3")))
     )
 
     fun getProgramsForCategory(categoryName: String): List<Program>? {

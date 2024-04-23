@@ -6,6 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import lyon.browser.tv_recyclerview_sample.Adapter.kotlin.ChannelAdapter
 import lyon.browser.tv_recyclerview_sample.Adapter.kotlin.ChannelAdapter.OnChannelItemClickListener
 import lyon.browser.tv_recyclerview_sample.Fragment.kotlin.DefaultFragment
@@ -44,7 +45,7 @@ class TVKotlinActivity: AppCompatActivity()  {
         setupChannelList()
         displayFragment(DefaultFragment())
     }
-
+    private var mLastFocusedPosition = RecyclerView.NO_POSITION
     private fun setupChannelList() {
         binding.channelList.apply {
             layoutManager = LinearLayoutManager(this@TVKotlinActivity)

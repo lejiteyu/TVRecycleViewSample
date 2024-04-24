@@ -76,7 +76,7 @@ class ChannelAdapter (private val channels: List<Channel>,
             }
 
             binding.root.setOnKeyListener { view, keyCode, keyEvent -> run{
-                if(keyEvent.action==KeyEvent.KEYCODE_DPAD_DOWN) {
+                if(keyEvent.action==KeyEvent.ACTION_DOWN) {
                     when (keyCode) {
                         KeyEvent.KEYCODE_DPAD_LEFT -> {
 
@@ -86,6 +86,8 @@ class ChannelAdapter (private val channels: List<Channel>,
                                 Toast.LENGTH_LONG
                             )
                                 .show()
+
+                            return@setOnKeyListener true
                         }
 
                         KeyEvent.KEYCODE_DPAD_RIGHT -> {
@@ -96,6 +98,7 @@ class ChannelAdapter (private val channels: List<Channel>,
                                 Toast.LENGTH_LONG
                             )
                                 .show()
+                            return@setOnKeyListener true
                         }
 
                         KeyEvent.KEYCODE_DPAD_UP -> {

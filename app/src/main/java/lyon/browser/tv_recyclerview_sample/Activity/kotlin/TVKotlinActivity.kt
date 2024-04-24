@@ -70,7 +70,8 @@ class TVKotlinActivity: FocusControTool()  {
 
             val onChannelCollapse = ChannelAdapter.OnChannelCollapse{
                 collapseChannelList() // 焦點不在 ChannelList 上時，收縮 ChannelList
-                (fragment as ProgramsFragment).setRowFocus(rowPos,itemPos)
+                (fragment as ProgramsFragment).setRowFocus(rowPos,
+                    rowPos?.let { (fragment as ProgramsFragment).programAdapter?.getRowItemPos(it) })
             }
 
             adapter = ChannelAdapter(

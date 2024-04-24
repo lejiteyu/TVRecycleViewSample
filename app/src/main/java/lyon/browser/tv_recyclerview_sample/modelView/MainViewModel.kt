@@ -3,6 +3,7 @@ package lyon.browser.tv_recyclerview_sample.modelView
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.recyclerview.widget.LinearLayoutManager
 import lyon.browser.tv_recyclerview_sample.R
 import lyon.browser.tv_recyclerview_sample.modelObject.Channel
 import lyon.browser.tv_recyclerview_sample.modelObject.ChannelCategory
@@ -12,13 +13,28 @@ import lyon.browser.tv_recyclerview_sample.modelObject.Program
 class MainViewModel  : ViewModel() {
     private val _textData = MutableLiveData<String>()
     val textData: LiveData<String> = _textData
-
+    private val _menuLinearLayoutManager= MutableLiveData<LinearLayoutManager>()
+    val menuLinearLayoutManager :LiveData<LinearLayoutManager> = _menuLinearLayoutManager
+    private val _menuPos = MutableLiveData<Int>()
+    val menuPos: LiveData<Int> = _menuPos
     init {
         _textData.value = "Hello, MVVM!"
     }
 
     fun updateText(newText: String) {
         _textData.value = newText
+    }
+
+    fun updateMenu(menuLinearLayoutManager: LinearLayoutManager) {
+        _menuLinearLayoutManager.value = menuLinearLayoutManager
+    }
+
+    fun updateMenuPos(menuPos: Int) {
+        _menuPos.value = menuPos
+    }
+
+    fun getMenuPos():Int?{
+        return _menuPos.value
     }
 
     val channels = listOf(

@@ -46,7 +46,7 @@ class TVKotlinActivity: FocusControTool()  {
         setupChannelList()
         displayFragment(DefaultFragment())
     }
-    private var mLastFocusedPosition = 0
+    private var mLastFocusedPosition = -1
     private fun setupChannelList() {
         binding.menuRecycleView.apply {
             layoutManager = LinearLayoutManager(this@TVKotlinActivity)
@@ -55,10 +55,13 @@ class TVKotlinActivity: FocusControTool()  {
             if(menulayoutManager!=null)
                 mainViewModel.updateMenu(menulayoutManager!!)
             val onChannelItemClickListener = OnChannelItemClickListener{ channel, position ->
+                expandedChannelList()// 焦點在 ChannelList 上時，展開 ChannelList
+                if(mLastFocusedPosition==position)
+                    return@OnChannelItemClickListener
                 mLastFocusedPosition = position
 
                 onChannelItemClick(channel)
-                expandedChannelList()// 焦點在 ChannelList 上時，展開 ChannelList
+
             }
 
             val onChannelExpanded = ChannelAdapter.OnChannelExpanded{
@@ -67,6 +70,7 @@ class TVKotlinActivity: FocusControTool()  {
 
             val onChannelCollapse = ChannelAdapter.OnChannelCollapse{
                 collapseChannelList() // 焦點不在 ChannelList 上時，收縮 ChannelList
+                (fragment as ProgramsFragment).setRowFocus(rowPos,itemPos)
             }
 
             adapter = ChannelAdapter(
@@ -115,13 +119,22 @@ class TVKotlinActivity: FocusControTool()  {
             transaction.commit()
         }
     }
-
+     var rowPos:Int?=0
+    var itemPos:Int?=0
+    fun setRowPos(rowPos:Int){
+        this.rowPos=rowPos
+    }
+    fun setItemPos(itemPos:Int){
+        this.itemPos=itemPos
+    }
      fun onChannelItemClick(channel: Channel) {
          fragment = ProgramsFragment.newInstance(channel)
         displayFragment(fragment!!)
          // 创建一个实现了 MenuFocusReq 接口的对象
          val menuFocusReqImpl = object : ProgramsFragment.MenuFocusReq {
              override fun focus(rowPos: Int, itemPos: Int) {
+                 setRowPos(rowPos)
+                 setItemPos(itemPos)
                  println("Row position: $rowPos, Item position: $itemPos")
                  val recyclerView =binding.menuRecycleView
                  // 获取指定位置的 ViewHolder

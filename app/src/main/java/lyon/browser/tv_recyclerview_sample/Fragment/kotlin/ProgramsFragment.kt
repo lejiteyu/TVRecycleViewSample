@@ -11,12 +11,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import lyon.browser.tv_recyclerview_sample.Adapter.kotlin.ChannelAdapter
 import lyon.browser.tv_recyclerview_sample.Adapter.kotlin.HorizontalAdapter
 import lyon.browser.tv_recyclerview_sample.Adapter.kotlin.ProgramAdapter
-import lyon.browser.tv_recyclerview_sample.AppController
+import lyon.browser.tv_recyclerview_sample.R
 import lyon.browser.tv_recyclerview_sample.databinding.FragmentProgramsBinding
-import lyon.browser.tv_recyclerview_sample.databinding.KotlinMainActivityBinding
 import lyon.browser.tv_recyclerview_sample.modelObject.Channel
 import lyon.browser.tv_recyclerview_sample.modelObject.Program
 import lyon.browser.tv_recyclerview_sample.modelView.MainViewModel
@@ -72,53 +70,76 @@ class ProgramsFragment : Fragment() {
     fun setMenuFosusReq(menuFocusReq:MenuFocusReq){
         this.menuFocusReq=menuFocusReq;
     }
-
+    var programAdapter:ProgramAdapter?=null
     private fun setupProgramsList(programs: List<Program>,title:String, channel: Channel) {
         binding.programsList.apply {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
             val onRowKeyListener = HorizontalAdapter.OnRowKeyListener { view, keyCode, keyEvent, rowPos, itemPos, itemSize ->
                 run{
-                    when(keyCode){
-                        KeyEvent.KEYCODE_DPAD_LEFT -> {
-                            if(itemPos<=0){
-                                menuFocusReq?.focus(rowPos,itemPos)
-                                return@OnRowKeyListener true
-                            }else{
-                                Toast.makeText(context, "HorizontalAdapter["+rowPos+"]["+itemPos+"] KEYCODE_DPAD_LEFT", Toast.LENGTH_LONG)
-                                    .show()
+                    if(keyEvent.action == KeyEvent.ACTION_DOWN) {
+                        when (keyCode) {
+                            KeyEvent.KEYCODE_DPAD_LEFT -> {
+                                if (itemPos <= 0) {
+                                    menuFocusReq?.focus(rowPos, itemPos)
+                                    return@OnRowKeyListener true
+                                } else {
+
+                                    Toast.makeText(
+                                        context,
+                                        "HorizontalAdapter[" + rowPos + "][" + itemPos + "] KEYCODE_DPAD_LEFT",
+                                        Toast.LENGTH_LONG
+                                    )
+                                        .show()
                                 }
                             }
 
 
-                        KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                            if(itemPos<itemSize-1){
+                            KeyEvent.KEYCODE_DPAD_RIGHT -> {
+                                if (itemPos < itemSize - 1) {
 
-                            }else{
-                                return@OnRowKeyListener true
+                                } else {
+                                    return@OnRowKeyListener true
+                                }
+                                Toast.makeText(
+                                    context,
+                                    "HorizontalAdapter [" + rowPos + "][" + itemPos + "] KEYCODE_DPAD_RIGHT",
+                                    Toast.LENGTH_LONG
+                                )
+                                    .show()
                             }
-                            Toast.makeText(context, "HorizontalAdapter ["+rowPos+"]["+itemPos+"] KEYCODE_DPAD_RIGHT", Toast.LENGTH_LONG)
-                                .show()
-                        }
 
-                        KeyEvent.KEYCODE_DPAD_UP -> {
+                            KeyEvent.KEYCODE_DPAD_UP -> {
 
-                            if(rowPos>0){
-
-                            }else{
-                                return@OnRowKeyListener true
+                                if (rowPos > 0) {
+                                    val rowP = rowPos-1
+                                    setRowFocus(rowP, programAdapter?.getRowItemPos(rowP))
+                                    return@OnRowKeyListener true
+                                } else {
+                                    return@OnRowKeyListener true
+                                }
+                                Toast.makeText(
+                                    context,
+                                    "HorizontalAdapter [" + rowPos + "][" + itemPos + "] KEYCODE_DPAD_RIGHT",
+                                    Toast.LENGTH_LONG
+                                )
+                                    .show()
                             }
-                            Toast.makeText(context, "HorizontalAdapter ["+rowPos+"]["+itemPos+"] KEYCODE_DPAD_RIGHT", Toast.LENGTH_LONG)
-                                .show()
-                        }
 
-                        KeyEvent.KEYCODE_DPAD_DOWN -> {
-                            if(rowPos<binding.programsList.size){
-
-                            }else{
-                               return@OnRowKeyListener true
+                            KeyEvent.KEYCODE_DPAD_DOWN -> {
+                                if (rowPos < binding.programsList.size - 1) {
+                                    val rowP = rowPos+1
+                                    setRowFocus(rowP, programAdapter?.getRowItemPos(rowP))
+                                    return@OnRowKeyListener true
+                                } else {
+                                    return@OnRowKeyListener true
+                                }
+                                Toast.makeText(
+                                    context,
+                                    "HorizontalAdapter [" + rowPos + "][" + itemPos + "] KEYCODE_DPAD_RIGHT",
+                                    Toast.LENGTH_LONG
+                                )
+                                    .show()
                             }
-                            Toast.makeText(context, "HorizontalAdapter ["+rowPos+"]["+itemPos+"] KEYCODE_DPAD_RIGHT", Toast.LENGTH_LONG)
-                                .show()
                         }
                     }
                     return@OnRowKeyListener false
@@ -127,11 +148,20 @@ class ProgramsFragment : Fragment() {
 
             }
             adapter = ProgramAdapter(programs,title,channel,onRowKeyListener)
-
+            programAdapter = adapter as ProgramAdapter
         }
     }
 
-    fun getFocusRecycleItem(){
-
+    fun setRowFocus(rowPos: Int?, itemPos: Int?){
+        val programsHolder = rowPos?.let {
+            binding.programsList.findViewHolderForAdapterPosition(it)
+        }
+        if(programsHolder!=null){
+           val horizontalList= programsHolder.itemView.findViewById<RecyclerView>(R.id.horizontalRecyclerView)
+            itemPos?.let {
+                val viewHolder=horizontalList.findViewHolderForAdapterPosition(it)
+                viewHolder?.itemView?.requestFocus()
+            }
+        }
     }
 }

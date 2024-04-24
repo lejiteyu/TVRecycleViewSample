@@ -76,26 +76,45 @@ class ChannelAdapter (private val channels: List<Channel>,
             }
 
             binding.root.setOnKeyListener { view, keyCode, keyEvent -> run{
-                when (keyCode) {
-                    KeyEvent.KEYCODE_DPAD_LEFT -> {
+                if(keyEvent.action==KeyEvent.KEYCODE_DPAD_DOWN) {
+                    when (keyCode) {
+                        KeyEvent.KEYCODE_DPAD_LEFT -> {
 
-                        Toast.makeText(context, "ChannelAdapter["+position+"] KEYCODE_DPAD_LEFT", Toast.LENGTH_LONG)
-                            .show()
-                    }
+                            Toast.makeText(
+                                context,
+                                "ChannelAdapter[" + position + "] KEYCODE_DPAD_LEFT",
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+                        }
 
-                    KeyEvent.KEYCODE_DPAD_RIGHT -> {
-                        onChannelCollapse.collapse()
-                        Toast.makeText(context, "ChannelAdapter ["+position+"] KEYCODE_DPAD_RIGHT", Toast.LENGTH_LONG)
-                            .show()
-                    }
+                        KeyEvent.KEYCODE_DPAD_RIGHT -> {
+                            onChannelCollapse.collapse()
+                            Toast.makeText(
+                                context,
+                                "ChannelAdapter [" + position + "] KEYCODE_DPAD_RIGHT",
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+                        }
 
-                    KeyEvent.KEYCODE_DPAD_UP -> {
-                        Toast.makeText(context, "ChannelAdapter ["+position+"] KEYCODE_DPAD_UP", Toast.LENGTH_LONG)
-                            .show()
-                    }
-                    KeyEvent.KEYCODE_DPAD_DOWN -> {
-                        Toast.makeText(context, "ChannelAdapter ["+position+"] KEYCODE_DPAD_DOWN", Toast.LENGTH_LONG)
-                            .show()
+                        KeyEvent.KEYCODE_DPAD_UP -> {
+                            Toast.makeText(
+                                context,
+                                "ChannelAdapter [" + position + "] KEYCODE_DPAD_UP",
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+                        }
+
+                        KeyEvent.KEYCODE_DPAD_DOWN -> {
+                            Toast.makeText(
+                                context,
+                                "ChannelAdapter [" + position + "] KEYCODE_DPAD_DOWN",
+                                Toast.LENGTH_LONG
+                            )
+                                .show()
+                        }
                     }
                 }
             }

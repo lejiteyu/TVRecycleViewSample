@@ -20,12 +20,17 @@ class HorizontalAdapter (
     private val channelName:String ,
     private val channel: Channel,
     val rowPos:Int,
-    val onRowKeyListener: OnRowKeyListener
+    val onRowKeyListener: OnRowKeyListener,
+    val setRowPosItem:SetRowPosItem
 ) : RecyclerView.Adapter<HorizontalAdapter.ItemHolder>() {
     var context: Context? =null
 
     fun interface OnRowKeyListener{
         fun onKey(view: View, keyCode:Int, keyEvent:KeyEvent,rowPos:Int,itemPos:Int , size:Int):Boolean
+    }
+
+    fun interface SetRowPosItem{
+        fun setPos(rowPos: Int, itemPos: Int)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {
@@ -51,7 +56,7 @@ class HorizontalAdapter (
             }
             binding.root.setOnFocusChangeListener { view, b ->
                 if(b){
-
+                    setRowPosItem.setPos(rowPos,position)
                 }else{
 
                 }
